@@ -1,0 +1,12 @@
+[binaries]
+c = ['x86_64-hugos-gcc', '-fPIC']
+cpp = ['x86_64-hugos-g++', '-fPIC']
+
+[properties]
+needs_exe_wrapper = true
+
+[host_machine]
+system = 'popcorn'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'
