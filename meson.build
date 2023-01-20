@@ -58,6 +58,7 @@ if not headers_only
 
 	add_project_arguments('-Wno-unused-function', '-D__MLIBC_BUILDING_MLIBC', language: ['c', 'cpp'])
 	add_project_arguments('-nostdinc', '-fno-builtin', language: ['c', 'cpp'])
+	add_project_arguments('-nostdinc', '-fno-builtin', language: ['c', 'cpp'])
 	add_project_arguments('-fno-rtti', '-fno-exceptions', language: 'cpp')
 	add_project_link_arguments('-nostdlib', language: ['c', 'cpp'])
 
@@ -137,6 +138,11 @@ elif host_machine.system() == 'dripos'
 	rtdl_include_dirs += include_directories('sysdeps/dripos/include')
 	libc_include_dirs += include_directories('sysdeps/dripos/include')
 	subdir('sysdeps/dripos')
+elif host_machine.system() == 'popcorn'
+    disable_linux_option = true
+    rtdl_include_dirs += include_directories('sysdeps/popcorn/include')
+    libc_include_dirs += include_directories('sysdeps/popcorn/include')
+    subdir('sysdeps/popcorn')
 else
 	error('No sysdeps defined for OS: ' + host_machine.system())
 endif

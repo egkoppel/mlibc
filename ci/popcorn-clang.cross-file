@@ -1,0 +1,12 @@
+[binaries]
+c = ['clang', '--target=x86_64-popcorn-elf', '-fPIC']
+cpp = ['clang++', '--target=x86_64-popcorn-elf', '-fPIC']
+
+[properties]
+needs_exe_wrapper = true
+
+[host_machine]
+system = 'popcorn'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'
