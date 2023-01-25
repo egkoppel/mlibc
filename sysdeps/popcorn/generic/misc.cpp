@@ -8,7 +8,8 @@ namespace [[gnu::visibility("hidden")]] Log {
 
 namespace mlibc {
 	void sys_libc_log(const char *message) {
-		Log::log(Log::WARNING, "mlibc log: %s", "unknown", -1, "unknown", message);
+		__asm__ volatile("int3");
+		//Log::log(Log::WARNING, "mlibc log: %s", "unknown", -1, "unknown", message);
 	}
 
 	[[noreturn]] void sys_libc_panic() {
@@ -48,6 +49,11 @@ namespace mlibc {
 
 	int sys_read(int fd, void *buf, size_t count, ssize_t *bytes_read) {
 		sys_libc_log("mlibc read");
+		return -1;
+	}
+
+	int sys_write(int fd, const void *buf, size_t count, ssize_t *bytes_written) {
+		sys_libc_log("mlibc write");
 		return -1;
 	}
 
