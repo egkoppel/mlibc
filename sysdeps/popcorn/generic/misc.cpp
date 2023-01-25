@@ -1,4 +1,4 @@
-#include <mlibc/all_sysdeps.h>
+#include <mlibc/all-sysdeps.hpp>
 
 namespace [[gnu::visibility("hidden")]] Log {
 	enum level_t { OFF = -1, CRITICAL, WARNING, INFO, DEBUG, TRACE };
