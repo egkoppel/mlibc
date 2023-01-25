@@ -54,6 +54,9 @@ if not no_headers
 	)
 	install_headers(
 		'include/convolution/syscall.h',
+		'include/convolution/scheduler.h',
+		'include/convolution/ipc.h',
+		'include/convolution/ipc.hpp',
 		subdir: 'convolution'
 	)
 endif

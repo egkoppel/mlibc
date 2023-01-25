@@ -67,19 +67,56 @@ enum convolution_syscall_vectors {
 	convolution_ipc_notify_vector
 };
 
-__attribute__((naked)) static inline void convolution_syscall_void_void(uint64_t vector) {}
-__attribute__((naked)) static inline convolution_handle convolution_syscall_handle_void(uint64_t vector) {}
-__attribute__((naked)) static inline convolution_handle convolution_syscall_handle_ptr_ptr(uint64_t vector,
-                                                                                           void *,
-                                                                                           void *) {}
-__attribute__((naked)) static inline void *convolution_syscall_ptr_ptr(uint64_t vector, void *) {}
-__attribute__((naked)) static inline void convolution_syscall_void_ptr(uint64_t vector, void *) {}
-__attribute__((naked)) static inline void *convolution_syscall_ptr_void(uint64_t vector) {}
-__attribute__((naked)) static inline void *convolution_syscall_ptr_handle_flags_ptr(uint64_t vector,
-                                                                                    convolution_handle,
-                                                                                    uint64_t,
-                                                                                    void *) {}
-__attribute__((naked)) static inline int64_t convolution_syscall_code_ptr(uint64_t vector, void *) {}
+/*
+ * register T a4_ asm("r8") = a4;
+ * register T a5_ asm("r9") = a5;
+ * asm volatile("syscall" : "=rax"(ret) : "a"(vector), "D"(a1), "S"(a2), "d"(a3), "r"(a4_)), "r"(a5_) : "rcx", "r11", "r12");
+ */
+
+static inline void convolution_syscall_v(uint64_t vector) {
+	asm volatile("syscall" : : "a"(vector) : "rdi", "rsi", "rdx", "r8", "r9", "rcx", "r11", "r12");
+}
+static inline void convolution_syscall_v_p(uint64_t vector, void *a1) {
+	asm volatile("syscall" : : "a"(vector), "D"(a1) : "rsi", "rdx", "r8", "r9", "rcx", "r11", "r12");
+}
+
+static inline int64_t convolution_syscall_i(uint64_t vector) {
+	int64_t ret;
+	asm volatile("syscall" : "=a"(ret) : "a"(vector) : "rdi", "rsi", "rdx", "r8", "r9", "rcx", "r11", "r12");
+	return ret;
+}
+static inline int64_t convolution_syscall_i_p(uint64_t vector, void *a1) {
+	int64_t ret;
+	asm volatile("syscall" : "=a"(ret) : "a"(vector), "D"(a1) : "rsi", "rdx", "r8", "r9", "rcx", "r11", "r12");
+	return ret;
+}
+
+static inline void *convolution_syscall_p(uint64_t vector) {
+	void *ret;
+	asm volatile("syscall" : "=a"(ret) : "a"(vector): "rdi", "rsi", "rdx", "r8", "r9", "rcx", "r11", "r12");
+	return ret;
+}
+static inline void *convolution_syscall_p_p(uint64_t vector, void *a1) {
+	void *ret;
+	asm volatile("syscall" : "=a"(ret) : "a"(vector), "D"(a1) : "rsi", "rdx", "r8", "r9", "rcx", "r11", "r12");
+	return ret;
+}
+static inline void *convolution_syscall_p_hip(uint64_t vector, convolution_handle a1, uint64_t a2, void *a3) {
+	void *ret;
+	asm volatile("syscall" : "=a"(ret) : "a"(vector), "D"(a1), "S"(a2), "d"(a3) : "r8", "r9", "rcx", "r11", "r12");
+	return ret;
+}
+
+static inline convolution_handle convolution_syscall_h_v(uint64_t vector) {
+	convolution_handle ret;
+	asm volatile("syscall" : "=a"(ret) : "a"(vector) : "rdi", "rsi", "rdx", "r8", "r9", "rcx", "r11", "r12");
+	return ret;
+}
+static inline convolution_handle convolution_syscall_h_pp(uint64_t vector, void *a1, void *a2) {
+	convolution_handle ret;
+	asm volatile("syscall" : "=a"(ret) : "a"(vector), "D"(a1), "S"(a2) : "rdx", "r8", "r9", "rcx", "r11", "r12");
+	return ret;
+}
 
 #ifdef __cplusplus
 };

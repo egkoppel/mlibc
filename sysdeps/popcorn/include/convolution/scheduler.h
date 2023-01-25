@@ -19,11 +19,11 @@ extern "C" {
 #endif
 
 static inline int64_t convolution_yield() {
-	convolution_syscall(0x001);
+	return convolution_syscall_i(0x001);
 }
 
 _Noreturn static inline void exit() {
-	convolution_syscall(0x002);
+	convolution_syscall_i(0x002);
 }
 
 #ifdef __cplusplus
